@@ -133,3 +133,6 @@ dmypy.json
 
 #katalog z opiniami
 opinions/
+
+# katalog z wykresami
+plots/ 

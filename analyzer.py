@@ -1,0 +1,44 @@
+from matplotlib import pyplot as plt
+from os import listdir 
+import pandas as pd 
+import numpy as np 
+
+pd.set_option("display.max_columns", None)
+
+def transform_stars(stars):
+    return float(stars.split("/")[0].replace(","),".") 
+
+print(*[file_name.split(".")[0] for file_name in listdir("opinions")], sep='\n')
+
+product_id = input("Podaj kod produktu: ")  
+
+opinions = pd.read_json("opinions/{}.json".format(product_id))
+
+opinions.stars = opinions.stars.apply(
+    lambda stars: float(stars.split("/")[0].replace(",",".")) )
+print(opinions.stars)
+
+opinions_count = opinions.opinion_id.count()
+#opinions_count = len(opinions.index)
+#opinions_count = opinions.shape[0]    
+pros_count = opinions.pros.astype(bool).sum()
+cons_count = opinions.cons.astype(bool).sum()
+average_score = opinions.stars.mean().round(2)
+
+stars = opinions.stars.value_counts().reindex(np.arange(0,5.001,0.5), fill_value=0)
+
+stars.plot.bar(color="yellow")
+plt.title("Gwiazdki")
+plt.xlabel("Liczba gwiaztek")
+plt.ylabel("Liczba opinii")
+plt.savefig("plots/{}.png".format(product_id)) 
+plt.close()
+
+recomm = opinions.recomm.value_counts(dropna=False).sort_index()
+
+recomm.plot.pie(colors=['red','blue','black'])
+plt.show()
+
+#print(type(opinions))
+#print(type(opinions.stars))
+#print(type(opinions["stars"]))
