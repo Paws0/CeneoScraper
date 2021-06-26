@@ -18,27 +18,38 @@ opinions.stars = opinions.stars.apply(
     lambda stars: float(stars.split("/")[0].replace(",",".")) )
 print(opinions.stars)
 
-opinions_count = opinions.opinion_id.count()
-#opinions_count = len(opinions.index)
-#opinions_count = opinions.shape[0]    
+opinions_count = opinions.opinion_id.count()    
 pros_count = opinions.pros.astype(bool).sum()
 cons_count = opinions.cons.astype(bool).sum()
 average_score = opinions.stars.mean().round(2)
 
 stars = opinions.stars.value_counts().reindex(np.arange(0,5.001,0.5), fill_value=0)
 
-stars.plot.bar(color="yellow")
+stars.plot.bar(color="lightsteelblue")
 plt.title("Gwiazdki")
 plt.xlabel("Liczba gwiaztek")
 plt.ylabel("Liczba opinii")
-plt.savefig("plots/{}.png".format(product_id)) 
+plt.savefig("plots/{}.bar.png".format(product_id))
 plt.close()
 
 recomm = opinions.recomm.value_counts(dropna=False).sort_index()
+plt.title('Opinie w procentach')
+plt.labels=recomm
+plt.gcf()
+explode=(0,0,0.03)
+mylabels = [ "Polecam", "Nie Polecam", "Brak Opinii" ]
+recomm.plot.pie( autopct='%1.0f%%',
+                 pctdistance=1.1, labeldistance=1.2,
+                 startangle = 315, explode=explode,
+                 labels=mylabels,
+                 rotatelabels=True,
+                 colors=['coral','powderblue','black'],
+)
 
-recomm.plot.pie(colors=['red','blue','black'])
-plt.show()
+ 
+Circle=plt.Circle(xy=(0,0), radius=0.75, facecolor='white')
+plt.gca().add_artist(Circle)
+plt.ylabel('')
+plt.savefig("plots/{}.pie.png".format(product_id)) 
+plt.close()
 
-#print(type(opinions))
-#print(type(opinions.stars))
-#print(type(opinions["stars"]))

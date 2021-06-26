@@ -38,7 +38,7 @@ while next_page:
     opinions = page_dom.select("div.js_product-review")
     for opinion in opinions:
         single_opinion = {key:get_feature(opinion,*value) for key, value in features.items()}
-        single_opinion["opinion_id"] = opinion["data-entry-id"],
+        single_opinion["opinion_id"] = opinion["data-entry-id"]
         all_opinions.append(single_opinion)
 
     try:    
