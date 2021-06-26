@@ -37,7 +37,7 @@ plt.title('Opinie w procentach')
 plt.labels=recomm
 plt.gcf()
 explode=(0,0,0.03)
-mylabels = [ "Polecam", "Nie Polecam", "Brak Opinii" ]
+mylabels = [ "Nie Polecam", "Polecam", "Brak Opinii" ]
 recomm.plot.pie( autopct='%1.0f%%',
                  pctdistance=1.1, labeldistance=1.2,
                  startangle = 315, explode=explode,
