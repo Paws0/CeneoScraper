@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 from os import listdir 
 import pandas as pd 
 import numpy as np 
+from pandas._config.config import options
 
 pd.set_option("display.max_columns", None)
 
@@ -14,9 +15,14 @@ product_id = input("Podaj kod produktu: ")
 
 opinions = pd.read_json("opinions/{}.json".format(product_id))
 
+opinions.replace({'recomm':{'Polecam':True, 'Nie Polecam':False, 'None':None}})
+
 opinions.stars = opinions.stars.apply(
     lambda stars: float(stars.split("/")[0].replace(",",".")) )
 print(opinions.stars)
+
+
+
 
 opinions_count = opinions.opinion_id.count()    
 pros_count = opinions.pros.astype(bool).sum()
@@ -33,6 +39,7 @@ plt.savefig("plots/{}.bar.png".format(product_id))
 plt.close()
 
 recomm = opinions.recomm.value_counts(dropna=False).sort_index()
+
 plt.title('Opinie w procentach')
 plt.labels=recomm
 plt.gcf()
@@ -52,4 +59,3 @@ plt.gca().add_artist(Circle)
 plt.ylabel('')
 plt.savefig("plots/{}.pie.png".format(product_id)) 
 plt.close()
-
