@@ -37,8 +37,14 @@ while next_page:
     page_dom = BeautifulSoup(r.text,"html.parser")
     opinions = page_dom.select("div.js_product-review")
     for opinion in opinions:
-        single_opinion = {key:str(get_feature(opinion,*value)) for key, value in features.items()}
-        single_opinion["opinion_id"] = opinion["data-entry-id"]
+        single_opinion = {key:get_feature(opinion,*value) for key, value in features.items()}
+        single_opinion["opinion_id"] =int( opinion["data-entry-id"])
+        single_opinion["recomm"]= True if single_opinion["recomm"]=="Polecam" else False if single_opinion["recomm"]=="Nie polecam" else None    
+        single_opinion["stars"]=float(single_opinion["stars"].split("/")[0].replace(",","."))        
+        #single_opinion["recomm"] = ( opinion["data-entry-id"])
+        single_opinion["useful"] = int(single_opinion["useful"])
+        single_opinion["useless"] = int(single_opinion["useless"])
+        single_opinion["purchased"] = bool(single_opinion["purchased"])
         all_opinions.append(single_opinion)
 
     try:    

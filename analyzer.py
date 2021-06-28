@@ -15,15 +15,6 @@ product_id = input("Podaj kod produktu: ")
 
 opinions = pd.read_json("opinions/{}.json".format(product_id))
 
-opinions.replace({'recomm':{'Polecam':True, 'Nie Polecam':False, 'None':None}})
-
-opinions.stars = opinions.stars.apply(
-    lambda stars: float(stars.split("/")[0].replace(",",".")) )
-print(opinions.stars)
-
-
-
-
 opinions_count = opinions.opinion_id.count()    
 pros_count = opinions.pros.astype(bool).sum()
 cons_count = opinions.cons.astype(bool).sum()
@@ -38,16 +29,19 @@ plt.ylabel("Liczba opinii")
 plt.savefig("plots/{}.bar.png".format(product_id))
 plt.close()
 
-recomm = opinions.recomm.value_counts(dropna=False).sort_index()
-
+recomm = opinions.recomm.value_counts(dropna=False).reindex([False,True,float("Nan")], fill_value=0)
+print(recomm)
 plt.title('Opinie w procentach')
 plt.labels=recomm
 plt.gcf()
-explode=(0,0,0.03)
+#explode=(0,0,0.03)
 mylabels = [ "Nie Polecam", "Polecam", "Brak Opinii" ]
-recomm.plot.pie( autopct='%1.0f%%',
+#labels = 
+recomm.plot.pie( 
+                 autopct=lambda p: '{:1.0f}%'.format(round(p)) if p > 0 else '',
+
                  pctdistance=1.1, labeldistance=1.2,
-                 startangle = 315, explode=explode,
+                 startangle = 315, #explode=explode,
                  labels=mylabels,
                  rotatelabels=True,
                  colors=['coral','powderblue','black'],

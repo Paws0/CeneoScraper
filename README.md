@@ -3,7 +3,7 @@
 * pobranie kodu pojedynczej strony z opiniami o wskazanym produkcie (done)
 *  Analiza kodu HTML pojedynczej opinii
 
-|Składowa opinii|Celektor CSS|Nazwa zmiennej|Typ danych|
+|Składowa opinii|Selektor CSS|Nazwa zmiennej|Typ danych|
 |:--------------|:-----------|:-------------|:---------|
 |Opinia|`div.js_product-review`|opinion|dict|
 |Identyfikator opinii|`["data-entry-id"]`|opinion_id|int|
